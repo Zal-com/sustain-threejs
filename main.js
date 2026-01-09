@@ -50,6 +50,17 @@ let networkLines;
 let geometricShapes = [];
 let currentSequence = -1;
 
+// Matrix background
+let matrixCanvas, matrixCtx;
+let matrixColumns = [];
+const MATRIX_CHARS = '01アイウエオカキクケコ<>{}[]|/\\+=*';
+const MATRIX_CONFIG = {
+    fontSize: 14,
+    opacity: 0.1,
+    speed: 0.15,
+    color: '#00d4aa'
+};
+
 // ============================================
 // Initialization
 // ============================================
@@ -82,6 +93,7 @@ function init() {
     startTime = 0;
 
     // Create elements
+    createMatrixBackground();
     createParticles();
     createNetwork();
     createGeometricShapes();
@@ -92,6 +104,95 @@ function init() {
 
     // Start animation
     animate();
+}
+
+// ============================================
+// Matrix Background (Very subtle)
+// ============================================
+function createMatrixBackground() {
+    matrixCanvas = document.createElement('canvas');
+    matrixCanvas.id = 'matrix-bg';
+    matrixCanvas.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        opacity: ${MATRIX_CONFIG.opacity};
+        pointer-events: none;
+    `;
+    document.body.appendChild(matrixCanvas);
+
+    matrixCtx = matrixCanvas.getContext('2d');
+    resizeMatrixCanvas();
+
+    // Initialize columns
+    initMatrixColumns();
+}
+
+function resizeMatrixCanvas() {
+    matrixCanvas.width = window.innerWidth;
+    matrixCanvas.height = window.innerHeight;
+    initMatrixColumns();
+}
+
+function initMatrixColumns() {
+    const columnCount = Math.floor(matrixCanvas.width / MATRIX_CONFIG.fontSize);
+    matrixColumns = [];
+    for (let i = 0; i < columnCount; i++) {
+        matrixColumns.push({
+            y: Math.random() * matrixCanvas.height,
+            speed: 0.3 + Math.random() * 0.7,
+            chars: Array.from({ length: 25 }, () =>
+                MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)]
+            )
+        });
+    }
+}
+
+function updateMatrixBackground() {
+    // Fade effect (higher = shorter trails, less bleeding)
+    matrixCtx.fillStyle = 'rgba(10, 22, 40, 0.25)';
+    matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+
+    matrixCtx.font = `${MATRIX_CONFIG.fontSize}px monospace`;
+
+    matrixColumns.forEach((col, i) => {
+        const x = i * MATRIX_CONFIG.fontSize;
+
+        // Move column down
+        col.y += MATRIX_CONFIG.speed * col.speed * MATRIX_CONFIG.fontSize;
+
+        // Reset when off screen
+        if (col.y > matrixCanvas.height + 300) {
+            col.y = -200;
+            col.speed = 0.3 + Math.random() * 0.7;
+        }
+
+        // Draw characters
+        for (let j = 0; j < 15; j++) {
+            const charY = col.y - j * MATRIX_CONFIG.fontSize;
+            if (charY > -50 && charY < matrixCanvas.height + 50) {
+                // Head is brighter
+                if (j === 0) {
+                    matrixCtx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+                } else if (j < 3) {
+                    matrixCtx.fillStyle = MATRIX_CONFIG.color;
+                } else {
+                    const alpha = Math.max(0.1, 0.7 - j / 15);
+                    matrixCtx.fillStyle = `rgba(0, 212, 170, ${alpha})`;
+                }
+
+                // Occasionally change character
+                if (Math.random() < 0.01) {
+                    col.chars[j] = MATRIX_CHARS[Math.floor(Math.random() * MATRIX_CHARS.length)];
+                }
+
+                matrixCtx.fillText(col.chars[j], x, charY);
+            }
+        }
+    });
 }
 
 // ============================================
@@ -358,6 +459,9 @@ function animate() {
     const elapsedTime = clock.getElapsedTime();
     const loopTime = elapsedTime % CONFIG.duration.total;
 
+    // Update matrix background
+    updateMatrixBackground();
+
     // Update progress bar
     updateProgressBar(loopTime);
 
@@ -552,6 +656,7 @@ function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+    resizeMatrixCanvas();
 }
 
 // ============================================
