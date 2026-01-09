@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sustain.brussels - Presentation Background</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <!-- Text Overlays -->
+    <div id="text-overlay">
+        <!-- Sequence 1: Enjeux -->
+        <div class="sequence seq-1">
+            <div class="keyword-group">
+                <span class="keyword" data-delay="0">Digital Transformation</span>
+                <span class="keyword" data-delay="0.3">Sustainability</span>
+                <span class="keyword" data-delay="0.6">Innovation</span>
+            </div>
+        </div>
+
+        <!-- Sequence 2: Ecosystem -->
+        <div class="sequence seq-2">
+            <p class="tagline">Connecting research, technology & industry</p>
+        </div>
+
+        <!-- Sequence 3: Leviers -->
+        <div class="sequence seq-3">
+            <div class="levers-grid">
+                <div class="lever" data-delay="0">
+                    <div class="lever-icon ai"></div>
+                    <span>AI & Data</span>
+                </div>
+                <div class="lever" data-delay="0.5">
+                    <div class="lever-icon test"></div>
+                    <span>Test Before Invest</span>
+                </div>
+                <div class="lever" data-delay="1">
+                    <div class="lever-icon poc"></div>
+                    <span>Proof of Concept</span>
+                </div>
+                <div class="lever" data-delay="1.5">
+                    <div class="lever-icon expertise"></div>
+                    <span>Access to Expertise</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sequence 4: Impact -->
+        <div class="sequence seq-4">
+            <p class="tagline-large">From idea to impact</p>
+        </div>
+    </div>
+
+    <!-- Logo watermark -->
+    <div id="logo-container">
+        <div class="logo-text">
+            <span class="logo-sustain">sustain</span><span class="logo-dot">.</span><span class="logo-brussels">brussels</span>
+        </div>
+        <div class="logo-ulb">ULB</div>
+    </div>
+
+    <!-- Progress indicator (optional, can be hidden) -->
+    <div id="progress-bar">
+        <div class="progress-fill"></div>
+    </div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="main.js"></script>
+</body>
+</html>

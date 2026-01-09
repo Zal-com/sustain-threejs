@@ -1,0 +1,497 @@
+/* sustain.brussels - Presentation Background Styles */
+
+:root {
+    --color-bg: #0a1628;
+    --color-primary: #00d4aa;
+    --color-secondary: #4a9eff;
+    --color-accent: #7c5cff;
+    --color-text: #ffffff;
+    --color-text-muted: rgba(255, 255, 255, 0.6);
+    --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-main);
+    background: var(--color-bg);
+    color: var(--color-text);
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+canvas {
+    display: block;
+}
+
+/* Text Overlay Container */
+#text-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Sequences */
+.sequence {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease-out, visibility 0.6s;
+}
+
+.sequence.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.sequence.exiting {
+    opacity: 0;
+    visibility: visible;
+}
+
+/* Sequence 1: Keywords */
+.keyword-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.keyword {
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(40px) scale(0.9);
+    filter: blur(8px);
+    background: linear-gradient(135deg, var(--color-text) 0%, var(--color-text-muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sequence.active .keyword {
+    animation: keywordEnter 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.sequence.exiting .keyword {
+    animation: keywordExit 0.5s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.sequence.active .keyword:nth-child(1) { animation-delay: 0.1s; }
+.sequence.active .keyword:nth-child(2) { animation-delay: 0.3s; }
+.sequence.active .keyword:nth-child(3) { animation-delay: 0.5s; }
+
+@keyframes keywordEnter {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.9);
+        filter: blur(8px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes keywordExit {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-30px) scale(1.1);
+        filter: blur(6px);
+    }
+}
+
+/* Sequence 2: Tagline */
+.tagline {
+    font-size: 2.5rem;
+    font-weight: 400;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+    text-align: center;
+    max-width: 80%;
+    opacity: 0;
+    transform: scale(0.8);
+    filter: blur(10px);
+}
+
+.sequence.active .tagline {
+    animation: taglineEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.sequence.exiting .tagline {
+    animation: taglineExit 0.5s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+@keyframes taglineEnter {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+        filter: blur(10px);
+    }
+    50% {
+        filter: blur(2px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes taglineExit {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.15);
+        filter: blur(8px);
+    }
+}
+
+/* Sequence 3: Levers Grid */
+.levers-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem 6rem;
+    max-width: 800px;
+}
+
+.lever {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transform: translateY(50px) scale(0.8);
+    filter: blur(5px);
+}
+
+.sequence.active .lever {
+    animation: leverEnter 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.sequence.exiting .lever {
+    animation: leverExit 0.4s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.sequence.active .lever:nth-child(1) { animation-delay: 0.1s; }
+.sequence.active .lever:nth-child(2) { animation-delay: 0.25s; }
+.sequence.active .lever:nth-child(3) { animation-delay: 0.4s; }
+.sequence.active .lever:nth-child(4) { animation-delay: 0.55s; }
+
+@keyframes leverEnter {
+    0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.8);
+        filter: blur(5px);
+    }
+    60% {
+        filter: blur(0);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes leverExit {
+    0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.9);
+    }
+}
+
+.lever-icon {
+    width: 80px;
+    height: 80px;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+    position: relative;
+    opacity: 0.9;
+    box-shadow: 0 0 20px rgba(0, 212, 170, 0.2), inset 0 0 15px rgba(0, 212, 170, 0.1);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.sequence.active .lever-icon {
+    animation: iconPulse 2s ease-in-out infinite;
+    animation-delay: inherit;
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 212, 170, 0.2), inset 0 0 15px rgba(0, 212, 170, 0.1);
+    }
+    50% {
+        box-shadow: 0 0 35px rgba(0, 212, 170, 0.4), inset 0 0 20px rgba(0, 212, 170, 0.2);
+    }
+}
+
+.lever-icon::before,
+.lever-icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* AI Icon */
+.lever-icon.ai::before {
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--color-primary);
+    border-radius: 50%;
+}
+.lever-icon.ai::after {
+    width: 10px;
+    height: 10px;
+    background: var(--color-primary);
+    border-radius: 50%;
+}
+
+/* Test Icon */
+.lever-icon.test::before {
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 26px solid var(--color-primary);
+    transform: translate(-50%, -55%);
+}
+
+/* POC Icon */
+.lever-icon.poc::before {
+    width: 35px;
+    height: 35px;
+    border: 2px solid var(--color-primary);
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+.lever-icon.poc::after {
+    width: 15px;
+    height: 15px;
+    background: var(--color-primary);
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* Expertise Icon */
+.lever-icon.expertise::before {
+    width: 30px;
+    height: 20px;
+    border: 2px solid var(--color-primary);
+    border-radius: 3px;
+    transform: translate(-50%, -30%);
+}
+.lever-icon.expertise::after {
+    width: 20px;
+    height: 10px;
+    border-bottom: 2px solid var(--color-primary);
+    border-left: 2px solid var(--color-primary);
+    border-right: 2px solid var(--color-primary);
+    transform: translate(-50%, 80%);
+}
+
+.lever span {
+    font-size: 1.1rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    color: var(--color-text-muted);
+    text-align: center;
+}
+
+/* Sequence 4: Large Tagline */
+.tagline-large {
+    font-size: 4rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    opacity: 0;
+    transform: scale(0.5) translateY(30px);
+    filter: blur(15px);
+}
+
+.sequence.active .tagline-large {
+    animation: impactEnter 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards, impactGlow 2s ease-in-out infinite 1.2s;
+}
+
+.sequence.exiting .tagline-large {
+    animation: impactExit 0.6s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+@keyframes impactEnter {
+    0% {
+        opacity: 0;
+        transform: scale(0.5) translateY(30px);
+        filter: blur(15px);
+    }
+    40% {
+        opacity: 1;
+        filter: blur(3px);
+    }
+    70% {
+        transform: scale(1.05) translateY(-5px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes impactGlow {
+    0%, 100% {
+        filter: drop-shadow(0 0 20px rgba(0, 212, 170, 0.3));
+    }
+    50% {
+        filter: drop-shadow(0 0 40px rgba(0, 212, 170, 0.6));
+    }
+}
+
+@keyframes impactExit {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(1.3);
+        filter: blur(12px);
+    }
+}
+
+/* Logo Container */
+#logo-container {
+    position: fixed;
+    bottom: 3rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-text {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+}
+
+.logo-sustain {
+    color: var(--color-text);
+}
+
+.logo-dot {
+    color: var(--color-primary);
+}
+
+.logo-brussels {
+    color: var(--color-primary);
+}
+
+.logo-ulb {
+    font-size: 0.9rem;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    color: var(--color-text-muted);
+}
+
+/* Progress Bar */
+#progress-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.1);
+    z-index: 30;
+}
+
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+    transition: width 0.1s linear;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .keyword {
+        font-size: 2.5rem;
+    }
+    .tagline {
+        font-size: 2rem;
+    }
+    .tagline-large {
+        font-size: 3rem;
+    }
+    .levers-grid {
+        gap: 2rem 4rem;
+    }
+    .lever-icon {
+        width: 60px;
+        height: 60px;
+    }
+}
+
+@media (max-width: 768px) {
+    .keyword {
+        font-size: 1.8rem;
+    }
+    .tagline {
+        font-size: 1.5rem;
+    }
+    .tagline-large {
+        font-size: 2rem;
+    }
+    .levers-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+}
