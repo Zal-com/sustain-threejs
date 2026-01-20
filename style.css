@@ -3,7 +3,7 @@
 :root {
     --color-bg: #0a1628;
     --color-primary: #00d4aa;
-    --color-secondary: #4a9eff;
+    --color-secondary: #5eabff;
     --color-accent: #7c5cff;
     --color-text: #ffffff;
     --color-text-muted: rgba(255, 255, 255, 0.6);
@@ -75,6 +75,12 @@ canvas {
     visibility: visible;
 }
 
+/* Sequence 2: Stack paragraphs vertically */
+.seq-2 {
+    flex-direction: column;
+    gap: 1rem;
+}
+
 /* Sequence 1: Keywords */
 .keyword-group {
     display: flex;
@@ -91,7 +97,7 @@ canvas {
     opacity: 0;
     transform: translateY(40px) scale(0.9);
     filter: blur(8px);
-    background: linear-gradient(135deg, var(--color-text) 0%, var(--color-text-muted) 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -137,20 +143,30 @@ canvas {
 
 /* Sequence 2: Tagline */
 .tagline {
-    font-size: 2.5rem;
-    font-weight: 400;
-    letter-spacing: 0.05em;
-    color: var(--color-text);
+    font-size: 3.5rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
     text-align: center;
     max-width: 80%;
     opacity: 0;
     transform: scale(0.8);
     filter: blur(10px);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 .sequence.active .tagline {
     animation: taglineEnter 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Staggered entrance for taglines */
+.seq-2.active .tagline:nth-child(1) { animation-delay: 0.1s; }
+.seq-2.active .tagline:nth-child(2) { animation-delay: 0.3s; }
+.seq-2.active .tagline:nth-child(3) { animation-delay: 0.5s; }
+.seq-2.active .tagline:nth-child(4) { animation-delay: 0.7s; }
 
 .sequence.exiting .tagline {
     animation: taglineExit 0.5s cubic-bezier(0.7, 0, 0.84, 0) forwards;
@@ -189,8 +205,8 @@ canvas {
 .levers-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 3rem 6rem;
-    max-width: 800px;
+    gap: 4rem 10rem;
+    max-width: 1000px;
 }
 
 .lever {
@@ -244,8 +260,8 @@ canvas {
 }
 
 .lever-icon {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border: 2px solid var(--color-primary);
     border-radius: 50%;
     position: relative;
@@ -333,11 +349,15 @@ canvas {
 }
 
 .lever span {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 400;
     letter-spacing: 0.02em;
-    color: var(--color-text-muted);
+    text-transform: uppercase;
     text-align: center;
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Sequence 4: Large Tagline */
@@ -345,6 +365,7 @@ canvas {
     font-size: 4rem;
     font-weight: 500;
     letter-spacing: 0.08em;
+    text-transform: uppercase;
     background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -404,60 +425,164 @@ canvas {
     }
 }
 
-/* Logo Container */
+/* ============================================
+   Sequence 5: Logo Cloud
+   ============================================ */
+.logo-cloud {
+    position: relative;
+    width: 1200px;
+    height: 800px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cloud-logo {
+    position: absolute;
+    opacity: 0;
+    transform: scale(0.5);
+    filter: blur(10px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+}
+
+/* Main logo (sustain) - centered and larger */
+.cloud-logo.cloud-main {
+    height: 150px;
+    width: auto;
+    z-index: 5;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+}
+
+/* Partner logos - positioned around the main logo */
+.cloud-logo.cloud-partner {
+    height: 100px;
+    width: auto;
+}
+
+.cloud-logo[data-index="1"] { top: 15%; left: 20%; }
+.cloud-logo[data-index="2"] { top: 10%; right: 20%; }
+.cloud-logo[data-index="3"] { bottom: 15%; left: 15%; }
+.cloud-logo[data-index="4"] { bottom: 20%; right: 15%; }
+
+/* When sequence 5 is active - show cloud logos */
+.seq-5.active .cloud-logo {
+    opacity: 1;
+    filter: blur(0);
+}
+
+.seq-5.active .cloud-logo.cloud-main {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.seq-5.active .cloud-logo.cloud-partner {
+    transform: scale(1);
+}
+
+/* Staggered entrance for cloud logos */
+.seq-5.active .cloud-logo[data-index="0"] { transition-delay: 0.1s; }
+.seq-5.active .cloud-logo[data-index="1"] { transition-delay: 0.2s; }
+.seq-5.active .cloud-logo[data-index="2"] { transition-delay: 0.3s; }
+.seq-5.active .cloud-logo[data-index="3"] { transition-delay: 0.4s; }
+.seq-5.active .cloud-logo[data-index="4"] { transition-delay: 0.5s; }
+
+/* Partners fade out state - added via JS */
+.seq-5.active.partners-hidden .cloud-partner {
+    opacity: 0;
+    transform: scale(0.8);
+    filter: blur(8px);
+    transition: opacity 1s ease, transform 1s ease, filter 0.8s ease;
+}
+
+/* Main logo stays visible and grows larger when alone */
+.seq-5.active.partners-hidden .cloud-main {
+    transform: translate(-50%, -50%) scale(3);
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ============================================
+   Logo Container
+   ============================================ */
 #logo-container {
     position: fixed;
-    bottom: 3rem;
     left: 50%;
-    transform: translateX(-50%);
     z-index: 20;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    gap: 0.5rem;
+    gap: 3rem;
+    padding: 1.5rem 4rem;
+    background: rgba(10, 22, 40, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: bottom 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 1.2s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.8s ease,
+                gap 1s ease,
+                padding 1s ease;
 }
 
-.logo-text {
-    font-size: 1.4rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
+/* Position states */
+#logo-container.position-bottom {
+    bottom: 2rem;
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
 }
 
-.logo-sustain {
-    color: var(--color-text);
+/* Container hidden (slides down off screen) */
+#logo-container.position-hidden {
+    bottom: -100px;
+    transform: translateX(-50%) scale(0.9);
+    opacity: 0;
 }
 
-.logo-dot {
-    color: var(--color-primary);
+.logo-svg {
+    height: 30px;
+    width: auto;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease,
+                transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.logo-brussels {
-    color: var(--color-primary);
+/* Staggered animation delays for container logos */
+#logo-container .logo-svg[data-index="0"] { transition-delay: 0s; }
+#logo-container .logo-svg[data-index="1"] { transition-delay: 0.1s; }
+#logo-container .logo-svg[data-index="2"] { transition-delay: 0.15s; }
+#logo-container .logo-svg[data-index="3"] { transition-delay: 0.2s; }
+#logo-container .logo-svg[data-index="4"] { transition-delay: 0.25s; }
+
+/* Visible state */
+#logo-container.logos-visible .logo-svg {
+    opacity: 0.9;
+    transform: translateY(0);
 }
 
-.logo-ulb {
-    font-size: 0.9rem;
-    font-weight: 400;
-    letter-spacing: 0.3em;
-    color: var(--color-text-muted);
+.logo-svg:hover {
+    opacity: 1;
+    transform: translateY(0) scale(1.05);
 }
 
-/* Progress Bar */
+.logo-svg.logo-main {
+    height: 36px;
+}
+
+.logo-separator {
+    width: 1px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.2);
+    transition: opacity 0.6s ease;
+}
+
+#logo-container.position-hidden .logo-separator {
+    opacity: 0;
+}
+
+/* Progress Bar - Hidden */
 #progress-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background: rgba(255, 255, 255, 0.1);
-    z-index: 30;
-}
-
-.progress-fill {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
-    transition: width 0.1s linear;
+    display: none;
 }
 
 /* Responsive */
